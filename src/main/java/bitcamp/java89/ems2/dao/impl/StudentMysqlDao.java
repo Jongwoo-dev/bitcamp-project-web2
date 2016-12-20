@@ -94,16 +94,16 @@ public class StudentMysqlDao implements StudentDao {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
 
     try (
-        PreparedStatement stmt2 = con.prepareStatement(
+        PreparedStatement stmt = con.prepareStatement(
             "insert into stud(sno,work,lst_schl,schl_nm,path) values(?,?,?,?,?)"); ) {
 
-      stmt2.setInt(1, student.getMemberNo());
-      stmt2.setString(2, student.isWorking() ? "Y" : "N");
-      stmt2.setString(3, student.getGrade());
-      stmt2.setString(4, student.getSchoolName());
-      stmt2.setString(5, student.getPhotoPath());
+      stmt.setInt(1, student.getMemberNo());
+      stmt.setString(2, student.isWorking() ? "Y" : "N");
+      stmt.setString(3, student.getGrade());
+      stmt.setString(4, student.getSchoolName());
+      stmt.setString(5, student.getPhotoPath());
 
-      stmt2.executeUpdate();
+      stmt.executeUpdate();
 
     } finally {
       ds.returnConnection(con);

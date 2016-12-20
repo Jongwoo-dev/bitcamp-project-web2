@@ -1,4 +1,4 @@
-package bitcamp.java89.ems2.servlet.student;
+package bitcamp.java89.ems2.servlet.teacher;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bitcamp.java89.ems2.dao.impl.StudentMysqlDao;
-import bitcamp.java89.ems2.domain.Student;
+import bitcamp.java89.ems2.dao.impl.TeacherMysqlDao;
+import bitcamp.java89.ems2.domain.Teacher;
 
 
 
-@WebServlet("/student/list")
-public class StudentListServlet extends HttpServlet {
+@WebServlet("/teacher/list")
+public class TeacherListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -30,13 +30,13 @@ public class StudentListServlet extends HttpServlet {
     out.println("<html>");
     out.println("<head>");
     out.println("<meta charset='UTF-8'>");
-    out.println("<title>학생관리-목록</title>");
+    out.println("<title>강사관리-목록</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>학생 정보</h1>");
+    out.println("<h1>강사 정보</h1>");
     try {
-      StudentMysqlDao studentDao = StudentMysqlDao.getInstance();
-      ArrayList<Student> list = studentDao.getList();
+      TeacherMysqlDao teacherDao = TeacherMysqlDao.getInstance();
+      ArrayList<Teacher> list = teacherDao.getList();
 
       out.println("<a href='form.html'>추가</a><br>");
       out.println("<table border='1'>");
@@ -44,25 +44,25 @@ public class StudentListServlet extends HttpServlet {
       out.println("  <th>회원번호</th>");
       out.println("  <th>이름</th>");
       out.println("  <th>전화</th>");
-      out.println("  <th>재직</th>");
-      out.println("  <th>최종학력</th>");
-      out.println("  <th>학교명</th>");
+      out.println("  <th>홈페이지</th>");
+      out.println("  <th>페이스북</th>");
+      out.println("  <th>트위터</th>");
       out.println("</tr>");
 
-      for (Student student : list) {
+      for (Teacher teacher : list) {
         out.println("<tr> ");
         out.printf("  <td>%d</td>"
             + "<td><a href='detail?memberNo=%1$d'>%s</a></td>"
             + "<td>%s</td>"
-            + "<td>%b</td>"
+            + "<td>%s</td>"
             + "<td>%s</td>"
             + "<td>%s</td>\n",
-            student.getMemberNo(),
-            student.getName(),
-            student.getTel(),
-            student.isWorking(),
-            student.getGrade(),
-            student.getSchoolName());
+            teacher.getMemberNo(),
+            teacher.getName(),
+            teacher.getTel(),
+            teacher.getHomepage(),
+            teacher.getFacebook(),
+            teacher.getTwitter());
         out.println("</tr>");
       }
 
