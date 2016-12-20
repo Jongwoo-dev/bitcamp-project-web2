@@ -6,9 +6,10 @@ public class Student extends Member {
   protected boolean working;
   protected String grade;
   protected String schoolName;
-  //protected String postNo;  //임시생략
-  //protected String basicAddress;
+  protected String postNo;
+  protected String basicAddress;
   protected String detailAddress;
+  protected String photoPath;
   
   public boolean isWorking() {
     return working;
@@ -28,7 +29,6 @@ public class Student extends Member {
   public void setSchoolName(String schoolName) {
     this.schoolName = schoolName;
   }
-  /*
   public String getPostNo() {
     return postNo;
   }
@@ -41,12 +41,17 @@ public class Student extends Member {
   public void setBasicAddress(String basicAddress) {
     this.basicAddress = basicAddress;
   }
-  */
   public String getDetailAddress() {
     return detailAddress;
   }
   public void setDetailAddress(String detailAddress) {
     this.detailAddress = detailAddress;
+  }
+  public String getPhotoPath() {
+    return photoPath;
+  }
+  public void setPhotoPath(String photoPath) {
+    this.photoPath = photoPath;
   }
   
   

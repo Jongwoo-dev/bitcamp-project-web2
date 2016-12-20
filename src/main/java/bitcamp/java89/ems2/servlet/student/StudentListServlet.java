@@ -41,18 +41,29 @@ public class StudentListServlet extends HttpServlet {
       out.println("<a href='form.html'>추가</a><br>");
       out.println("<table border='1'>");
       out.println("<tr>");
-      out.println("  <th>등록번호</th><th>이름</th><th>전화</th><th>이메일</th><th>재직여부</th>");
+      out.println("  <th>회원번호</th>");
+      out.println("  <th>이름</th>");
+      out.println("  <th>전화</th>");
+      out.println("  <th>재직</th>");
+      out.println("  <th>최종학력</th>");
+      out.println("  <th>학교명</th>");
       out.println("</tr>");
 
       for (Student student : list) {
         out.println("<tr> ");
         //* 링크 이따가 수정
-        out.printf("  <td>%s</a></td><td><a href='detail?memberNo=%1$s'>%s</td><td>%s</td><td>%s</td><td>%s</td>\n",
+        out.printf("  <td>%d</td>"
+            + "<td><a href='detail?memberNo=%1$d'>%s</a></td>"
+            + "<td>%s</td>"
+            + "<td>%b</td>"
+            + "<td>%s</td>"
+            + "<td>%s</td>\n",
             student.getMemberNo(),
             student.getName(),
             student.getTel(),
-            student.getEmail(),
-            student.isWorking() ? "재직중" : "휴직중");
+            student.isWorking(),
+            student.getGrade(),
+            student.getSchoolName());
         out.println("</tr>");
       }
 

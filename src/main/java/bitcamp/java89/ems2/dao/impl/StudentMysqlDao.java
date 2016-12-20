@@ -32,9 +32,9 @@ public class StudentMysqlDao implements StudentDao {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select mno, name, tel, email, pwd, work, lst_schl, schl_nm, det_adr, path "
-          + "from memb right outer join stud on memb.mno=stud.sno");
-        
+          "select mno, name, tel, email, work, lst_schl, schl_nm, path "
+          + "from stud "
+          + "left outer join memb on stud.sno=memb.mno");
       ResultSet rs = stmt.executeQuery(); ){
       
       while (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
@@ -43,11 +43,11 @@ public class StudentMysqlDao implements StudentDao {
         student.setName(rs.getString("name"));
         student.setTel(rs.getString("tel"));
         student.setEmail(rs.getString("email"));
-        student.setPassword(rs.getString("pwd"));
         student.setWorking(rs.getString("work").equals("Y") ? true : false);
         student.setGrade(rs.getString("lst_schl"));
         student.setSchoolName(rs.getString("schl_nm"));
-        student.setDetailAddress(rs.getString("det_adr"));
+        student.setPhotoPath(rs.getString("path"));
+        
         list.add(student);
       }
     } finally {
@@ -56,28 +56,28 @@ public class StudentMysqlDao implements StudentDao {
     return list;
   }
   
-  public Student getOne(String memberNo) throws Exception {
+  public Student getOne(int memberNo) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
         PreparedStatement stmt = con.prepareStatement(
-            "select mno, name, tel, email, pwd, work, lst_schl, schl_nm, det_adr, path "
-                + "from memb right outer join stud on memb.mno=stud.sno "
-                + "where mno=?");) {
+            "select name, tel, email, work, lst_schl, schl_nm, path"
+            + " from stud"
+            + " left outer join memb on stud.sno=memb.mno"
+            + " where mno=?");) {
 
-      stmt.setString(1, memberNo);
+      stmt.setInt(1, memberNo);
       ResultSet rs = stmt.executeQuery();
 
       if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
         Student student = new Student();
-        student.setMemberNo(rs.getInt("mno"));
+        student.setMemberNo(memberNo);
+        student.setEmail(rs.getString("email"));
         student.setName(rs.getString("name"));
         student.setTel(rs.getString("tel"));
-        student.setEmail(rs.getString("email"));
-        student.setPassword(rs.getString("pwd"));
         student.setWorking(rs.getString("work").equals("Y") ? true : false);
         student.setGrade(rs.getString("lst_schl"));
         student.setSchoolName(rs.getString("schl_nm"));
-        student.setDetailAddress(rs.getString("det_adr"));
+        student.setPhotoPath(rs.getString("path"));
         rs.close();
         return student;
         
@@ -92,109 +92,107 @@ public class StudentMysqlDao implements StudentDao {
   
   public void insert(Student student) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
-    try (
-      PreparedStatement stmt = con.prepareStatement(
-          "insert into memb(name,tel,email,pwd) "
-          + " values(?,?,?,password(?))"); ) {
-      
-      stmt.setString(1, student.getName());
-      stmt.setString(2, student.getTel());
-      stmt.setString(3, student.getEmail());
-      stmt.setString(4, student.getPassword());
-      
-      stmt.executeUpdate();
-      
-      try (
-      PreparedStatement stmt2 = con.prepareStatement(
-          "insert into stud(sno,work,lst_schl,schl_nm,det_adr) "
-          + " values(LAST_INSERT_ID(),?,?,?,?)"); ) {
 
-      stmt2.setString(1, student.isWorking() ? "Y" : "N");
-      stmt2.setString(2, student.getGrade());
-      stmt2.setString(3, student.getSchoolName());
-      stmt2.setString(4, student.getDetailAddress());
-      
+    try (
+        PreparedStatement stmt2 = con.prepareStatement(
+            "insert into stud(sno,work,lst_schl,schl_nm,path) values(?,?,?,?,?)"); ) {
+
+      stmt2.setInt(1, student.getMemberNo());
+      stmt2.setString(2, student.isWorking() ? "Y" : "N");
+      stmt2.setString(3, student.getGrade());
+      stmt2.setString(4, student.getSchoolName());
+      stmt2.setString(5, student.getPhotoPath());
+
       stmt2.executeUpdate();
-      } 
+
     } finally {
       ds.returnConnection(con);
     }
   }
-  
+
   public void update(Student student) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "update memb set "
-          + "name=?,tel=?,email=?,pwd=password(?) "
-          + "where mno=?"); ) {
+          "update stud set"
+          + " work=?, lst_schl=?, schl_nm=?, path=?"
+          + " where sno=?"); ) {
       
-      stmt.setString(1, student.getName());
-      stmt.setString(2, student.getTel());
-      stmt.setString(3, student.getEmail());
-      stmt.setString(4, student.getPassword());
-      stmt.setString(5, Integer.toString(student.getMemberNo()));
+      stmt.setString(1, student.isWorking() ? "Y" : "N");
+      stmt.setString(2, student.getGrade());
+      stmt.setString(3, student.getSchoolName());
+      stmt.setString(4, student.getPhotoPath());
+      stmt.setInt(5, student.getMemberNo());
       
       stmt.executeUpdate();
       
-      try (
-      PreparedStatement stmt2 = con.prepareStatement(
-          "update stud set "
-          + "work=?,lst_schl=?,schl_nm=?,det_adr=? "
-          + "where sno=?"); ) {
-
-      stmt2.setString(1, student.isWorking() ? "Y" : "N");
-      stmt2.setString(2, student.getGrade());
-      stmt2.setString(3, student.getSchoolName());
-      stmt2.setString(4, student.getDetailAddress());
-      stmt2.setString(5, Integer.toString(student.getMemberNo()));
-      
-      stmt2.executeUpdate();
-      } 
     } finally {
       ds.returnConnection(con);
     }
   }
   
-  public void delete(String memberNo) throws Exception {
+  public void delete(int memberNo) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
           "delete from stud where sno=?"); ) {
       
-      stmt.setString(1, memberNo);
+      stmt.setInt(1, memberNo);
       
       stmt.executeUpdate();
       
-      try (
-      PreparedStatement stmt2 = con.prepareStatement(
-          "delete from memb where mno=?"); ) {
-
-      stmt2.setString(1, memberNo);
-      
-      stmt2.executeUpdate();
-      } 
     } finally {
       ds.returnConnection(con);
     }
   }
   
-  public boolean existMemberNo(String memberNo) throws Exception {
+  public boolean exist(String email) throws Exception {
     Connection con = ds.getConnection(); 
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "select * from stud where sno=?"); ) {
-      
-      stmt.setString(1, memberNo);
+          "select count(*)"
+          + " from stud left outer join memb on stud.sno=memb.mno"
+          + " where email=?"); ) {
+
+      stmt.setString(1, email);
       ResultSet rs = stmt.executeQuery();
       
-      if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
-        rs.close();
+      rs.next();
+      int count = rs.getInt(1);
+      rs.close();
+
+      if(count > 0) {
         return true;
       } else {
-        rs.close();
         return false;
       }
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
+  
+  public boolean exist(int memberNo) throws Exception {
+    Connection con = ds.getConnection(); 
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "select count(*)"
+          + " from stud left outer join memb on stud.sno=memb.mno"
+          + " where sno=?"); ) {
+
+      stmt.setInt(1, memberNo);
+      ResultSet rs = stmt.executeQuery();
+      
+      rs.next();
+      int count = rs.getInt(1);
+      rs.close();
+
+      if(count > 0) {
+        return true;
+      } else {
+        return false;
+      }
+      
     } finally {
       ds.returnConnection(con);
     }
