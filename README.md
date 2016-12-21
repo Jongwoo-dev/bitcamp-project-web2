@@ -1,9 +1,18 @@
 # java89-project-web2
 
+## 0.6 - ServletRequest의 보관소 기능을 이용하여 예외 정보 공유
+- 서블릿에서 예외가 발생하면 ErrorServlet으로 실행을 위임한다.
+  이때 오류 정보를 ServletRequest에 담아서 넘긴다.
+- ErrorServlet은 ServletRequest에 보관된 오류 정보를 꺼내서 출력한다.
+- 모든 서블릿 코드 변경
+- ErrorServlet 코드 변경 
+
 ## 0.5 - 포워딩 적용
 - 서블릿에서 오류가 발생하면 오류를 처리하는 서블릿으로 포워딩 시킨다.
 - ErrorServlet 클래스 정의
-- 서블릿 코드 변경
+- 서블릿에 포워드 적용
+- HeaderServlet과 FooterServlet 적용
+- 서블릿에 인클루딩 적용
 
 ## 0.4 - 강사 관리 기능 구현
 - domain 객체 구현
@@ -13,7 +22,7 @@
 - 서블릿 객체 구현
   - TeacherListServlet, TeacherAddServlet, TeacherDetailServlet, 
     TeacherUpdateServlet, TeacherDeleteServlet 클래스 구현 
-        
+
 ## 0.3 - 매니저 관리 기능 구현
 - domain 객체 구현
   - Manager 클래스 구현
@@ -22,7 +31,7 @@
 - 서블릿 객체 구현
   - ManagerListServlet, ManagerAddServlet, ManagerDetailServlet, 
     ManagerUpdateServlet, ManagerDeleteServlet 클래스 구현 
-        
+
 ## 0.2 - 학생 관리 기능 구현
 - 프로젝트 기본 패키지 준비
   - bitcamp.java89.ems2 패키지 생성
