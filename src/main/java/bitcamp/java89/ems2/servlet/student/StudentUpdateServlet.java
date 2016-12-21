@@ -16,7 +16,7 @@ import bitcamp.java89.ems2.domain.Student;
 @WebServlet("/student/update")
 public class StudentUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
-
+  
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
@@ -45,13 +45,13 @@ public class StudentUpdateServlet extends HttpServlet {
     out.println("<title>학생관리-변경</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>학생 결과</h1>");
+    out.println("<h1>변경 결과</h1>");
     
     try {
       StudentMysqlDao studentDao = StudentMysqlDao.getInstance();
       
       if (!studentDao.exist(student.getMemberNo())) {
-        throw new Exception("사용자를 찾지 못했습니다.");
+        throw new Exception("학생을 찾지 못했습니다.");
       }
       
       MemberMysqlDao memberDao = MemberMysqlDao.getInstance();

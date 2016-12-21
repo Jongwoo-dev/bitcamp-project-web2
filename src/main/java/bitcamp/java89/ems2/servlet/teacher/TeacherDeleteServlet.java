@@ -41,11 +41,11 @@ public class TeacherDeleteServlet extends HttpServlet {
       TeacherMysqlDao teacherDao = TeacherMysqlDao.getInstance();
     
       if (!teacherDao.exist(memberNo)) {
-        throw new Exception("사용자를 찾지 못했습니다.");
+        throw new Exception("강사를 찾지 못했습니다.");
       }
       
       teacherDao.delete(memberNo);
-      
+
       MemberMysqlDao memberDao = MemberMysqlDao.getInstance();
       StudentMysqlDao studentDao = StudentMysqlDao.getInstance();
       ManagerMysqlDao managerDao = ManagerMysqlDao.getInstance();
@@ -63,5 +63,5 @@ public class TeacherDeleteServlet extends HttpServlet {
     out.println("</body>");
     out.println("</html>");
     
-  }
+  }  
 }

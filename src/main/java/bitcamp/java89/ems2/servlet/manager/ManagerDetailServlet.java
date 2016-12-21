@@ -40,28 +40,33 @@ public class ManagerDetailServlet extends HttpServlet {
       Manager manager = managerDao.getOne(memberNo);
       
       if (manager == null) {
-        throw new Exception("해당 매니저가 없습니다.");
+        throw new Exception("해당 아이디의 학생이 없습니다.");
       }
       
       out.println("<table border='1'>");
-
-      out.printf("<tr><th>이메일</th><td><input name='email' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>이메일</th><td>"
+          + "<input name='email' type='text' value='%s'></td></tr>\n", 
           manager.getEmail());
-      out.printf("<tr><th>암호</th><td><input name='password' type='password'></td></tr>\n");
-      out.printf("<tr><th>이름</th><td><input name='name' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>암호</th><td>"
+          + "<input name='password' type='password'></td></tr>\n");
+      out.printf("<tr><th>이름</th><td>"
+          + "<input name='name' type='text' value='%s'></td></tr>\n", 
           manager.getName());
-      out.printf("<tr><th>전화</th><td><input name='tel' type='text' value='%s'></td></tr>\n",
-          manager.getTel());
-      out.printf("<tr><th>직급</th><td><input name='position' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>직위</th><td>"
+          + "<input name='position' type='text' value='%s'></td></tr>\n", 
           manager.getPosition());
-      out.printf("<tr><th>팩스</th><td><input name='fax' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>전화</th><td>"
+          + "<input name='tel' type='text' value='%s'></td></tr>\n", 
+          manager.getTel());
+      out.printf("<tr><th>팩스</th><td>"
+          + "<input name='fax' type='text' value='%s'></td></tr>\n", 
           manager.getFax());
-      out.printf("<tr><th>사진</th><td><input name='photoPath' type='file'></td></tr>\n");
+      out.printf("<tr><th>사진</th><td><input name='photoPath' type='file'></td></tr>");
       out.println("</table>");
       
       out.println("<button type='submit'>변경</button>");
       out.printf(" <a href='delete?memberNo=%s'>삭제</a>\n", manager.getMemberNo());
-      out.printf("<input type='hidden' name='memberNo' value='%d'></td></tr>\n", manager.getMemberNo());
+      out.printf("<input type='hidden' name='memberNo' value='%d'>\n", manager.getMemberNo());
       
     } catch (Exception e) {
       out.printf("<p>%s</p>\n", e.getMessage());
@@ -73,4 +78,6 @@ public class ManagerDetailServlet extends HttpServlet {
     out.println("</html>");
     
   }
+  
+  
 }

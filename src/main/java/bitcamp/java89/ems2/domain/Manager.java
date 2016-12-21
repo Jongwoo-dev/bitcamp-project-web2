@@ -1,12 +1,11 @@
 package bitcamp.java89.ems2.domain;
 
-public class Manager extends Member{
+public class Manager extends Member {
   private static final long serialVersionUID = 1L;
   
   protected String position;
   protected String fax;
   protected String photoPath;
-  
   
   public String getPosition() {
     return position;
@@ -23,7 +22,11 @@ public class Manager extends Member{
   public String getPhotoPath() {
     return photoPath;
   }
-  public void setPhotoPath(String path) {
-    this.photoPath = path;
+  public void setPhotoPath(String photoPath) {
+    this.photoPath = photoPath;
   }
+  
+  
+  
+  
 }

@@ -3,14 +3,13 @@ package bitcamp.java89.ems2.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
-import com.mysql.jdbc.Statement;
-
-import bitcamp.java89.ems2.dao.MemberDao;
+import bitcamp.java89.ems2.dao.StudentDao;
 import bitcamp.java89.ems2.domain.Member;
 import bitcamp.java89.ems2.util.DataSource;
 
-public class MemberMysqlDao implements MemberDao {
+public class MemberMysqlDao implements StudentDao {
   DataSource ds;
   
   //Singleton 패턴 - start
@@ -29,19 +28,19 @@ public class MemberMysqlDao implements MemberDao {
   // end - Singleton 패턴
   
   public boolean exist(String email) throws Exception {
-    Connection con = ds.getConnection(); 
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
           "select count(*) from memb where email=?"); ) {
-
+      
       stmt.setString(1, email);
       ResultSet rs = stmt.executeQuery();
       
       rs.next();
       int count = rs.getInt(1);
       rs.close();
-
-      if(count > 0) {
+      
+      if (count > 0) {
         return true;
       } else {
         return false;
@@ -50,13 +49,13 @@ public class MemberMysqlDao implements MemberDao {
     } finally {
       ds.returnConnection(con);
     }
-  }
-   
+  } 
+  
   public void insert(Member member) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
       PreparedStatement stmt = con.prepareStatement(
-          "insert into memb(email, pwd, name, tel) values(?,password(?),?,?)",
+          "insert into memb(email,pwd,name,tel) values(?,password(?),?,?)",
           Statement.RETURN_GENERATED_KEYS); ) {
       
       stmt.setString(1, member.getEmail());
@@ -69,12 +68,12 @@ public class MemberMysqlDao implements MemberDao {
       keyRS.next();
       member.setMemberNo(keyRS.getInt(1));
       keyRS.close();
-      
+
     } finally {
       ds.returnConnection(con);
     }
-  }
-  
+  }  
+
   public void update(Member member) throws Exception {
     Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
     try (
@@ -97,7 +96,7 @@ public class MemberMysqlDao implements MemberDao {
   }
   
   public void delete(int memberNo) throws Exception {
-    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    Connection con = ds.getConnection(); 
     try (
       PreparedStatement stmt = con.prepareStatement(
           "delete from memb where mno=?"); ) {
@@ -112,12 +111,12 @@ public class MemberMysqlDao implements MemberDao {
   }
   
   public Member getOne(String email) throws Exception {
-    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    Connection con = ds.getConnection(); 
     try (
-        PreparedStatement stmt = con.prepareStatement(
-            "select mno, name, tel, email"
-            + " from memb"
-            + " where email=?");) {
+      PreparedStatement stmt = con.prepareStatement(
+          "select mno, name, tel, email"
+          + " from memb"
+          + " where email=?");) {
 
       stmt.setString(1, email);
       ResultSet rs = stmt.executeQuery();
@@ -139,5 +138,4 @@ public class MemberMysqlDao implements MemberDao {
       ds.returnConnection(con);
     }
   }
-  
 }

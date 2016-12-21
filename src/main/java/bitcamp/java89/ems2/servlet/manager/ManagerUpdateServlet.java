@@ -16,7 +16,7 @@ import bitcamp.java89.ems2.domain.Manager;
 @WebServlet("/manager/update")
 public class ManagerUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
-
+  
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) 
       throws ServletException, IOException {
@@ -44,7 +44,7 @@ public class ManagerUpdateServlet extends HttpServlet {
     out.println("<title>매니저관리-변경</title>");
     out.println("</head>");
     out.println("<body>");
-    out.println("<h1>매니저 결과</h1>");
+    out.println("<h1>변경 결과</h1>");
     
     try {
       ManagerMysqlDao managerDao = ManagerMysqlDao.getInstance();
@@ -60,6 +60,7 @@ public class ManagerUpdateServlet extends HttpServlet {
       out.println("<p>변경 하였습니다.</p>");
       
     } catch (Exception e) {
+      e.printStackTrace();
       out.printf("<p>%s</p>\n", e.getMessage());
     }
     

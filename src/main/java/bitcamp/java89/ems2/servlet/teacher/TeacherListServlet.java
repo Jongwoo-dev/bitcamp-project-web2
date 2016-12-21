@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.impl.TeacherMysqlDao;
 import bitcamp.java89.ems2.domain.Teacher;
 
-
-
 @WebServlet("/teacher/list")
 public class TeacherListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
@@ -41,38 +39,35 @@ public class TeacherListServlet extends HttpServlet {
       out.println("<a href='form.html'>추가</a><br>");
       out.println("<table border='1'>");
       out.println("<tr>");
-      out.println("  <th>회원번호</th>");
+      out.println("  <th>번호</th>");
       out.println("  <th>이름</th>");
       out.println("  <th>전화</th>");
+      out.println("  <th>이메일</th>");
       out.println("  <th>홈페이지</th>");
-      out.println("  <th>페이스북</th>");
-      out.println("  <th>트위터</th>");
       out.println("</tr>");
-
+      
       for (Teacher teacher : list) {
         out.println("<tr> ");
         out.printf("  <td>%d</td>"
             + "<td><a href='detail?memberNo=%1$d'>%s</a></td>"
             + "<td>%s</td>"
             + "<td>%s</td>"
-            + "<td>%s</td>"
             + "<td>%s</td>\n",
-            teacher.getMemberNo(),
-            teacher.getName(),
-            teacher.getTel(),
-            teacher.getHomepage(),
-            teacher.getFacebook(),
-            teacher.getTwitter());
+          teacher.getMemberNo(),
+          teacher.getName(),
+          teacher.getTel(),
+          teacher.getEmail(),
+          teacher.getHomepage());
         out.println("</tr>");
       }
-
+      
       out.println("</table>");
       out.println("</body>");
       out.println("</html>");
-
+      
     } catch (Exception e) {
       throw new ServletException(e);
     }
-
+    
   }
 }

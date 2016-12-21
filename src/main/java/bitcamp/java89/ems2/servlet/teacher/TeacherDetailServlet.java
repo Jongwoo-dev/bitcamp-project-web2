@@ -44,26 +44,32 @@ public class TeacherDetailServlet extends HttpServlet {
       }
       
       out.println("<table border='1'>");
-
-      out.printf("<tr><th>이메일</th><td><input name='email' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>이메일</th><td>"
+          + "<input name='email' type='text' value='%s'></td></tr>\n", 
           teacher.getEmail());
-      out.printf("<tr><th>암호</th><td><input name='password' type='password'></td></tr>\n");
-      out.printf("<tr><th>이름</th><td><input name='name' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>암호</th><td>"
+          + "<input name='password' type='password'></td></tr>\n");
+      out.printf("<tr><th>이름</th><td>"
+          + "<input name='name' type='text' value='%s'></td></tr>\n", 
           teacher.getName());
-      out.printf("<tr><th>전화</th><td><input name='tel' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>전화</th><td>"
+          + "<input name='tel' type='text' value='%s'></td></tr>\n", 
           teacher.getTel());
-      out.printf("<tr><th>홈페이지</th><td><input name='homepage' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>홈페이지</th><td>"
+          + "<input name='homepage' type='text' value='%s'></td></tr>\n", 
           teacher.getHomepage());
-      out.printf("<tr><th>페이스북</th><td><input name='facebook' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>페이스북</th><td>"
+          + "<input name='facebook' type='text' value='%s'></td></tr>\n", 
           teacher.getFacebook());
-      out.printf("<tr><th>트위터</th><td><input name='twitter' type='text' value='%s'></td></tr>\n",
+      out.printf("<tr><th>트위터</th><td>"
+          + "<input name='twitter' type='text' value='%s'></td></tr>\n", 
           teacher.getTwitter());
-      out.printf("<tr><th>사진</th><td><input name='photoPath' type='file'></td></tr>\n");
+      out.printf("<tr><th>사진</th><td><input name='photoPath' type='file'></td></tr>");
       out.println("</table>");
       
       out.println("<button type='submit'>변경</button>");
       out.printf(" <a href='delete?memberNo=%s'>삭제</a>\n", teacher.getMemberNo());
-      out.printf("<input type='hidden' name='memberNo' value='%d'></td></tr>\n", teacher.getMemberNo());
+      out.printf("<input type='hidden' name='memberNo' value='%d'>\n", teacher.getMemberNo());
       
     } catch (Exception e) {
       out.printf("<p>%s</p>\n", e.getMessage());
@@ -75,4 +81,6 @@ public class TeacherDetailServlet extends HttpServlet {
     out.println("</html>");
     
   }
+  
+  
 }

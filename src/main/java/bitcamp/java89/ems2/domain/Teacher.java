@@ -2,7 +2,7 @@ package bitcamp.java89.ems2.domain;
 
 public class Teacher extends Member {
   private static final long serialVersionUID = 1L;
-
+  
   protected String homepage;
   protected String facebook;
   protected String twitter;
@@ -25,4 +25,8 @@ public class Teacher extends Member {
   public void setTwitter(String twitter) {
     this.twitter = twitter;
   }
+  
+  
+  
+  
 }

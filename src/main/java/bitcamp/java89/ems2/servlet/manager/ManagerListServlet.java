@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.impl.ManagerMysqlDao;
 import bitcamp.java89.ems2.domain.Manager;
 
-
-
 @WebServlet("/manager/list")
 public class ManagerListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
@@ -41,35 +39,32 @@ public class ManagerListServlet extends HttpServlet {
       out.println("<a href='form.html'>추가</a><br>");
       out.println("<table border='1'>");
       out.println("<tr>");
-      out.println("  <th>회원번호</th>");
+      out.println("  <th>번호</th>");
       out.println("  <th>이름</th>");
+      out.println("  <th>직위</th>");
       out.println("  <th>전화</th>");
-      out.println("  <th>직급</th>");
-      out.println("  <th>팩스</th>");
       out.println("</tr>");
-
+      
       for (Manager manager : list) {
         out.println("<tr> ");
         out.printf("  <td>%d</td>"
             + "<td><a href='detail?memberNo=%1$d'>%s</a></td>"
             + "<td>%s</td>"
-            + "<td>%s</td>"
             + "<td>%s</td>\n",
-            manager.getMemberNo(),
-            manager.getName(),
-            manager.getTel(),
-            manager.getPosition(),
-            manager.getFax());
+          manager.getMemberNo(),
+          manager.getName(),
+          manager.getPosition(),
+          manager.getTel());
         out.println("</tr>");
       }
-
+      
       out.println("</table>");
       out.println("</body>");
       out.println("</html>");
-
+      
     } catch (Exception e) {
       throw new ServletException(e);
     }
-
+    
   }
 }

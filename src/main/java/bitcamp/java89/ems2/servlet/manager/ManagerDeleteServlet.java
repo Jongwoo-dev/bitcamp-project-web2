@@ -45,7 +45,7 @@ public class ManagerDeleteServlet extends HttpServlet {
       }
       
       managerDao.delete(memberNo);
-      
+
       MemberMysqlDao memberDao = MemberMysqlDao.getInstance();
       StudentMysqlDao studentDao = StudentMysqlDao.getInstance();
       TeacherMysqlDao teacherDao = TeacherMysqlDao.getInstance();
@@ -63,5 +63,5 @@ public class ManagerDeleteServlet extends HttpServlet {
     out.println("</body>");
     out.println("</html>");
     
-  }
+  }  
 }

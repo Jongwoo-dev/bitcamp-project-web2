@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import bitcamp.java89.ems2.dao.impl.StudentMysqlDao;
 import bitcamp.java89.ems2.domain.Student;
 
-
-
 @WebServlet("/student/list")
 public class StudentListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
@@ -48,7 +46,7 @@ public class StudentListServlet extends HttpServlet {
       out.println("  <th>최종학력</th>");
       out.println("  <th>학교명</th>");
       out.println("</tr>");
-
+      
       for (Student student : list) {
         out.println("<tr> ");
         out.printf("  <td>%d</td>"
@@ -57,22 +55,22 @@ public class StudentListServlet extends HttpServlet {
             + "<td>%b</td>"
             + "<td>%s</td>"
             + "<td>%s</td>\n",
-            student.getMemberNo(),
-            student.getName(),
-            student.getTel(),
-            student.isWorking(),
-            student.getGrade(),
-            student.getSchoolName());
+          student.getMemberNo(),
+          student.getName(),
+          student.getTel(),
+          student.isWorking(),
+          student.getGrade(),
+          student.getSchoolName());
         out.println("</tr>");
       }
-
+      
       out.println("</table>");
       out.println("</body>");
       out.println("</html>");
-
+      
     } catch (Exception e) {
       throw new ServletException(e);
     }
-
+    
   }
 }
