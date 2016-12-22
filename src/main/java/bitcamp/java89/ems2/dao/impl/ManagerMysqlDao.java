@@ -5,27 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import bitcamp.java89.ems2.dao.StudentDao;
+import bitcamp.java89.ems2.dao.ManagerDao;
 import bitcamp.java89.ems2.domain.Manager;
 import bitcamp.java89.ems2.util.DataSource;
 
-public class ManagerMysqlDao implements StudentDao {
+public class ManagerMysqlDao implements ManagerDao {
   DataSource ds;
   
-  //Singleton 패턴 - start
-  private ManagerMysqlDao() {
-    ds = DataSource.getInstance();
+  public void setDataSource(DataSource ds) {
+    this.ds = ds;
   }
- 
-  static ManagerMysqlDao instance;
- 
-  public static ManagerMysqlDao getInstance() {
-    if (instance == null) {
-      instance = new ManagerMysqlDao();
-    }
-    return instance;
-  }
-  // end - Singleton 패턴
 
   public boolean exist(int memberNo) throws Exception {
     Connection con = ds.getConnection(); 
@@ -52,6 +41,32 @@ public class ManagerMysqlDao implements StudentDao {
       ds.returnConnection(con);
     }
   } 
+  
+  public boolean exist(String email) throws Exception {
+    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
+    try (
+        PreparedStatement stmt = con.prepareStatement(
+            "select count(*)"
+                + " from mgr left outer join memb on mgr.mrno=memb.mno"
+                + " where email=?"); ) {
+      
+      stmt.setString(1, email);
+      ResultSet rs = stmt.executeQuery();
+      
+      rs.next();
+      int count = rs.getInt(1);
+      rs.close();
+      
+      if (count > 0) {
+        return true;
+      } else {
+        return false;
+      }
+      
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
   
   public ArrayList<Manager> getList() throws Exception {
     ArrayList<Manager> list = new ArrayList<>();
@@ -81,32 +96,6 @@ public class ManagerMysqlDao implements StudentDao {
     return list;
   }
 
-  public boolean exist(String email) throws Exception {
-    Connection con = ds.getConnection(); // 커넥션풀에서 한 개의 Connection 객체를 임대한다.
-    try (
-      PreparedStatement stmt = con.prepareStatement(
-          "select count(*)"
-          + " from mgr left outer join memb on mgr.mrno=memb.mno"
-          + " where email=?"); ) {
-      
-      stmt.setString(1, email);
-      ResultSet rs = stmt.executeQuery();
-      
-      rs.next();
-      int count = rs.getInt(1);
-      rs.close();
-      
-      if (count > 0) {
-        return true;
-      } else {
-        return false;
-      }
-      
-    } finally {
-      ds.returnConnection(con);
-    }
-  }
-  
   public void insert(Manager manager) throws Exception {
     Connection con = ds.getConnection(); 
     try (
