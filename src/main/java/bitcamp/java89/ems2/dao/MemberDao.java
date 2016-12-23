@@ -6,6 +6,7 @@ import bitcamp.java89.ems2.util.DataSource;
 public interface MemberDao {
   public void setDataSource(DataSource ds);
   public boolean exist(String email) throws Exception;
+  public boolean exist(String email, String password) throws Exception;
   public void insert(Member member) throws Exception;
   public void update(Member member) throws Exception;
   public void delete(int memberNo) throws Exception;
