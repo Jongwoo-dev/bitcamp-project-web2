@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import bitcamp.java89.ems2.dao.TeacherDao;
+import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.DataSource;
 
@@ -106,40 +108,81 @@ public class TeacherMysqlDao implements TeacherDao {
       stmt.setString(3, teacher.getFacebook());
       stmt.setString(4, teacher.getTwitter());
       stmt.executeUpdate();
+      
+      this.insertPhotoList(teacher);
 
     } finally {
       ds.returnConnection(con);
     }
   } 
+  
+  public void insertPhotoList(Teacher teacher) throws Exception {
+    Connection con = ds.getConnection(); 
+    try (
+      PreparedStatement stmt = con.prepareStatement(
+          "insert into tch_phot(tno,path) values(?,?)"); ) {
+      
+      List<Photo> photoList = teacher.getPhotoList();
+      for (Photo photo : photoList) {
+        if (photo.getFilePath() == null) {
+          continue;
+        }
+        stmt.setInt(1, teacher.getMemberNo());
+        stmt.setString(2, photo.getFilePath());
+        stmt.executeUpdate();
+      }
+
+    } finally {
+      ds.returnConnection(con);
+    }
+  }
 
   public Teacher getOne(int memberNo) throws Exception {
     Connection con = ds.getConnection(); 
     try (
+        /*
+         select name, tel, email, hmpg, fcbk, twit, tpno, path
+         from tcher
+         left outer join memb on tcher.tno=memb.mno
+         left outer join tch_phot on tcher.tno=tch_phot.tno
+         where tcher.tno=37;
+         */
       PreparedStatement stmt = con.prepareStatement(
-          "select name, tel, email, hmpg, fcbk, twit"
+          "select name, tel, email, hmpg, fcbk, twit, tpno, path"
           + " from tcher"
           + " left outer join memb on tcher.tno=memb.mno"
-          + " where tno=?");) {
+          + " left outer join tch_phot on tcher.tno=tch_phot.tno"
+          + " where tcher.tno=?");) {
 
       stmt.setInt(1, memberNo);
       ResultSet rs = stmt.executeQuery();
 
-      if (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
-        Teacher teacher = new Teacher();
-        teacher.setMemberNo(memberNo);
-        teacher.setEmail(rs.getString("email"));
-        teacher.setName(rs.getString("name"));
-        teacher.setTel(rs.getString("tel"));
-        teacher.setHomepage(rs.getString("hmpg"));
-        teacher.setFacebook(rs.getString("fcbk"));
-        teacher.setTwitter(rs.getString("twit"));
-        rs.close();
-        return teacher;
-        
-      } else {
-        rs.close();
-        return null;
-      }
+      Teacher teacher = null;
+      ArrayList<Photo> photoList = new ArrayList<>();
+      
+      while (rs.next()) { // 서버에서 레코드 한 개를 가져왔다면,
+        if (teacher == null) {
+          teacher = new Teacher();
+          teacher.setMemberNo(memberNo);
+          teacher.setEmail(rs.getString("email"));
+          teacher.setName(rs.getString("name"));
+          teacher.setTel(rs.getString("tel"));
+          teacher.setHomepage(rs.getString("hmpg"));
+          teacher.setFacebook(rs.getString("fcbk"));
+          teacher.setTwitter(rs.getString("twit"));          
+        }
+        if (rs.getString("path") != null) {
+          photoList.add(new Photo()
+              .setNo(rs.getInt("tpno"))
+              .setFilePath(rs.getString("path"))
+              .setOwnerId(memberNo));
+        }
+      } 
+      rs.close();
+      
+      teacher.setPhotoList(photoList);
+      return teacher;
+      
     } finally {
       ds.returnConnection(con);
     }
