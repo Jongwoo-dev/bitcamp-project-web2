@@ -6,17 +6,17 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import bitcamp.java89.ems2.dao.TeacherDao;
 import bitcamp.java89.ems2.domain.Photo;
 import bitcamp.java89.ems2.domain.Teacher;
 import bitcamp.java89.ems2.util.DataSource;
 
+@Repository("teacherDao")
 public class TeacherMysqlDao implements TeacherDao {
-  DataSource ds;
-  
-  public void setDataSource(DataSource ds) {
-    this.ds = ds;
-  }
+  @Autowired DataSource ds;
 
   public boolean exist(int memberNo) throws Exception {
     Connection con = ds.getConnection(); 
@@ -205,7 +205,7 @@ public class TeacherMysqlDao implements TeacherDao {
       
       stmt.executeUpdate();
       
-      this.deletePhotoList(teacher);
+      this.deletePhotoList(teacher.getMemberNo());
       this.insertPhotoList(teacher);
     } finally {
       ds.returnConnection(con);
@@ -218,8 +218,9 @@ public class TeacherMysqlDao implements TeacherDao {
       PreparedStatement stmt = con.prepareStatement(
           "delete from tcher where tno=?"); ) {
       
-      stmt.setInt(1, memberNo);
+      this.deletePhotoList(memberNo);
       
+      stmt.setInt(1, memberNo);
       stmt.executeUpdate();
       
     } finally {
@@ -227,13 +228,13 @@ public class TeacherMysqlDao implements TeacherDao {
     }
   }
   
-  public void deletePhotoList(Teacher teacher) throws Exception {
+  public void deletePhotoList(int memberNo) throws Exception {
     Connection con = ds.getConnection(); 
     try (
       PreparedStatement stmt = con.prepareStatement(
           "delete from tch_phot where tno=?"); ) {
       
-      stmt.setInt(1, teacher.getMemberNo());
+      stmt.setInt(1, memberNo);
       
       stmt.executeUpdate();
       
