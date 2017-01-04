@@ -47,7 +47,9 @@ public class DispatcherServlet extends HttpServlet {
     
     } catch (Exception e) {
       request.setAttribute("error", e);
-      RequestDispatcher rd = request.getRequestDispatcher("/error.jsp");
+      request.setAttribute("title", "애플리케이션 오류!");
+      request.setAttribute("contentPage", "/error.jsp");
+      RequestDispatcher rd = request.getRequestDispatcher("/main.jsp");
       rd.forward(request, response);
       return;
     }

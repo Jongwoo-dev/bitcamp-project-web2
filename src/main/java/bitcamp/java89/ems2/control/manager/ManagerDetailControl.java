@@ -26,6 +26,8 @@ public class ManagerDetailControl implements PageController {
     }
 
     request.setAttribute("manager", manager);
-    return "detail.jsp";
+    request.setAttribute("title", "매니저관리-상세정보");
+    request.setAttribute("contentPage", "/manager/detail.jsp");
+    return "/main.jsp"; 
   }
 }

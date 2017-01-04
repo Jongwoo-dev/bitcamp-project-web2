@@ -22,6 +22,8 @@ public class StudentDetailcontrol implements PageController {
       throw new Exception("해당 학생이 없습니다.");
     }
     request.setAttribute("student", student);
-    return "detail.jsp";
+    request.setAttribute("title", "학생관리-상세정보");
+    request.setAttribute("contentPage", "/student/detail.jsp");
+    return"/main.jsp";
   }
 }
