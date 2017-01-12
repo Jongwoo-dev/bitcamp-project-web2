@@ -17,7 +17,7 @@
 </tr>
 <tr><th>이메일</th><td><input name='email' type='text' placeholder='예)hong@test.com' value='${cookie.email.value}'></td></tr>
 <tr><th>암호</th><td><input name='password' type='password'></td></tr>
-<tr><th></th><td><input name='saveEmail' type='checkbox'> 이메일 저장</td></tr>
+<tr><th></th><td><input name='saveEmail' type='checkbox' checked> 이메일 저장</td></tr>
 </table>
 <button type='submit'>로그인</button>
 </form>
