@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import bitcamp.java89.ems2.domain.Manager;
 
 public interface ManagerDao {
-  boolean exist(int memberNo) throws Exception;
-  boolean exist(String email) throws Exception;
+  int countByNo(int memberNo) throws Exception;
+  int count(String email) throws Exception;
   ArrayList<Manager> getList() throws Exception;
   void insert(Manager manager) throws Exception;
   Manager getOne(int memberNo) throws Exception;

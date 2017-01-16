@@ -1,5 +1,7 @@
 package bitcamp.java89.ems2.control;
 
+import java.util.HashMap;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,8 +40,10 @@ public class AuthControl {
       cookie.setMaxAge(0);
       response.addCookie(cookie);
     }
-    
-    Member member = memberDao.getOne(email, password);
+    HashMap<String,String> paramMap = new HashMap<>();
+    paramMap.put("email", email);
+    paramMap.put("password", password);
+    Member member = memberDao.getOneByEmailPassword(paramMap);
     
     if (member != null) {
       Member detailMember = this.getMemberInfo(userType, member.getMemberNo());
@@ -75,7 +79,7 @@ public class AuthControl {
       return studentDao.getOne(memberNo);
       
     } else if (userType.equals(Member.TEACHER)) {
-      return teacherDao.getOne(memberNo);
+      return teacherDao.getOneWithPhoto(memberNo);
       
     } else /*if (userType.equals("Member.MANAGER"))*/ {
       return managerDao.getOne(memberNo);
