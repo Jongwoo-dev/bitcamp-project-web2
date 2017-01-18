@@ -19,16 +19,16 @@ import bitcamp.java89.ems2.util.MultipartUtil;
 @Controller
 public class StudentControl {
   @Autowired ServletContext sc;
-
+  
   @Autowired StudentService studentService;
-
+  
   @RequestMapping("/student/list")
   public String list(Model model) throws Exception {
     List<Student> list = studentService.getList();
     model.addAttribute("students", list);
     model.addAttribute("title", "학생관리-목록");
     model.addAttribute("contentPage", "/student/list.jsp");
-    return "main"; 
+    return "main";
   }
   
   @RequestMapping("/student/detail")
@@ -50,17 +50,17 @@ public class StudentControl {
   public String add(Student student, MultipartFile photo) throws Exception {
     
     // 페이지 컨트롤러는 입력 파라미터 값을 가공하여 모델 객체에게 전달하는 일을 한다.
-    if (photo.getSize() > 0) {
+    if (photo.getSize() > 0) { 
       String newFilename = MultipartUtil.generateFilename();
       photo.transferTo(new File(sc.getRealPath("/upload/" + newFilename)));
       student.setPhotoPath(newFilename);
     }
     
     studentService.add(student);
-    
+
     return "redirect:list.do";
   }
-  
+
   @RequestMapping("/student/delete")
   public String delete(int memberNo, HttpServletRequest request) throws Exception {
     studentService.delete(memberNo);
@@ -70,14 +70,18 @@ public class StudentControl {
   @RequestMapping("/student/update")
   public String update(Student student, MultipartFile photo) throws Exception {
     
-    if (photo.getSize() > 0) {  // 파일이 업로드 되었다면
+    if (photo.getSize() > 0) { // 파일이 업로드 되었다면,
       String newFilename = MultipartUtil.generateFilename();
       photo.transferTo(new File(sc.getRealPath("/upload/" + newFilename)));
       student.setPhotoPath(newFilename);
     }
-    
     studentService.update(student);
     
     return "redirect:list.do";
   }
 }
+
+
+
+
+

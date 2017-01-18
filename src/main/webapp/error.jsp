@@ -5,7 +5,6 @@
     pageEncoding="UTF-8"
     isErrorPage="true"
     trimDirectiveWhitespaces="true"%>
-
 <h1>오류 내용</h1>
 <pre>
 <jsp:useBean id="error" class="java.lang.Throwable" scope="request"/>

@@ -23,21 +23,22 @@ import bitcamp.java89.ems2.domain.Teacher;
 public class AuthFilter implements Filter {
 
   @Override
-  public void init(FilterConfig filterConfig) throws ServletException {
-    
-  }
+  public void init(FilterConfig filterConfig) throws ServletException {}
 
   @Override
   public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
       throws IOException, ServletException {
+    
     HttpServletRequest request = (HttpServletRequest)req;
     HttpServletResponse response = (HttpServletResponse)resp;
+    
     // 세션에 사용자 정보가 저장된 경우(로그인한 경우) 멤버 정보에서 사진 정보를 뽑아서
     // ServletRequest 보관소에 저장한다.
     Member member = (Member)request.getSession().getAttribute("member");
     if (member != null) {
       request.setAttribute("photoPath", this.getPhotoPath(member));
     }
+    
     chain.doFilter(request, response);
   }
 
@@ -47,8 +48,10 @@ public class AuthFilter implements Filter {
   private String getPhotoPath(Member member) {
     if (member instanceof Student) {
       return ((Student)member).getPhotoPath();
+      
     } else if (member instanceof Manager) {
       return ((Manager)member).getPhotoPath();
+      
     } else /*if (member instanceof Teacher)*/ {
       List<Photo> photoList = ((Teacher)member).getPhotoList();
       if (photoList.size() > 0) {
@@ -58,5 +61,9 @@ public class AuthFilter implements Filter {
       }
     }
   }
-
 }
+
+
+
+
+

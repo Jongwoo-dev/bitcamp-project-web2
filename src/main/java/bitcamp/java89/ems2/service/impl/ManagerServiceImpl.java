@@ -15,24 +15,23 @@ import bitcamp.java89.ems2.service.ManagerService;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
-
+  
   @Autowired MemberDao memberDao;
   @Autowired StudentDao studentDao;
   @Autowired ManagerDao managerDao;
   @Autowired TeacherDao teacherDao;
   
-  @Override
+  
   public List<Manager> getList() throws Exception {
     return managerDao.getList();
   }
-
-  @Override
+  
   public Manager getDetail(int no) throws Exception {
     return managerDao.getOne(no);
   }
-
-  @Override
+  
   public int add(Manager manager) throws Exception {
+    
     if (managerDao.count(manager.getEmail()) > 0) {
       throw new Exception("같은 매니저 이메일이 존재합니다. 등록을 취소합니다.");
     }
@@ -46,10 +45,8 @@ public class ManagerServiceImpl implements ManagerService {
     }
     
     return managerDao.insert(manager);
-    
   }
-
-  @Override
+  
   public int delete(int no) throws Exception {
     if (managerDao.countByNo(no) == 0) {
       throw new Exception("사용자를 찾지 못했습니다.");
@@ -60,10 +57,10 @@ public class ManagerServiceImpl implements ManagerService {
     if (studentDao.countByNo(no) == 0 && teacherDao.countByNo(no) == 0) {
       memberDao.delete(no);
     }
+    
     return count;
   }
-
-  @Override
+  
   public int update(Manager manager) throws Exception {
     if (managerDao.countByNo(manager.getMemberNo()) == 0) {
       throw new Exception("사용자를 찾지 못했습니다.");
@@ -72,5 +69,4 @@ public class ManagerServiceImpl implements ManagerService {
     memberDao.update(manager);
     return managerDao.update(manager);
   }
-
 }

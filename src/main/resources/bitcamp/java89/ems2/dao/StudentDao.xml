@@ -2,7 +2,9 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
 <mapper namespace="bitcamp.java89.ems2.dao.StudentDao">
+
   <resultMap type="student" id="student-map">
     <id     column="mno"        property="memberNo"/>
     <result column="name"       property="name"/>
@@ -11,24 +13,23 @@
     <result column="tel"        property="tel"/>
     <result column="work"       property="working"/>
     <result column="lst_schl"   property="grade"/>
-    <result column="schl_nm"  property="schoolName"/>
+    <result column="schl_nm"    property="schoolName"/>
     <result column="pst_no"     property="postNo"/>
     <result column="bas_adr"    property="basicAddress"/>
     <result column="det_adr"    property="detailAddress"/>
     <result column="path"       property="photoPath"/>
-    
   </resultMap>
   
   <select id="count" parameterType="string" resultType="int">
     select count(*)
-    from stud s
+    from stud s 
       left outer join memb m on s.sno=m.mno
     where email=#{value}
   </select>
   
   <select id="countByNo" parameterType="int" resultType="int">
     select count(*)
-    from stud s
+    from stud s 
       left outer join memb m on s.sno=m.mno
     where s.sno=#{value}
   </select>
@@ -43,13 +44,13 @@
       s.lst_schl, 
       s.schl_nm, 
       s.path
-    from stud s 
+    from stud s
       left outer join memb m on s.sno=m.mno
   </select>
   
   <select id="getOne" parameterType="int" resultMap="student-map">
     select
-      m.mno, 
+      m.mno,
       m.name, 
       m.tel, 
       m.email, 
@@ -59,7 +60,7 @@
       s.path
     from stud s
       left outer join memb m on s.sno=m.mno
-    where mno=#{value}
+    where m.mno=#{value}
   </select>
 
   <insert id="insert" parameterType="student">
@@ -67,28 +68,38 @@
     values(
       #{memberNo},
       #{working},
-      <!-- 
+      <!--  
       <choose>
-        <when test="working == true">'Y'</when>
+        <when test="working == true">'Y'</when> 
         <otherwise>'N'</otherwise>
       </choose>,
-       -->
-      #{grade},
-      #{schoolName},
+      -->
+      #{grade}, 
+      #{schoolName}, 
       #{photoPath})
-  </insert>
+  </insert>  
   
   <update id="update" parameterType="student">
     update stud set
-      work=#{working}, 
-      lst_schl=#{grade}, 
-      schl_nm=#{schoolName}, 
-      path=#{photoPath}
+	    work=#{working}, 
+	    lst_schl=#{grade}, 
+	    schl_nm=#{schoolName}, 
+	    path=#{photoPath}
     where sno=#{memberNo}
   </update>
   
   <delete id="delete" parameterType="int">
+  <![CDATA[
     delete from stud where sno=#{value}
+  ]]>
   </delete>
+
 </mapper>
+
+
+
+
+
+
+
 

@@ -19,10 +19,9 @@ import bitcamp.java89.ems2.util.MultipartUtil;
 
 @Controller
 public class TeacherControl {
+  @Autowired ServletContext sc;
   
   @Autowired TeacherService teacherService;
-  
-  @Autowired ServletContext sc;
   
   @RequestMapping("/teacher/list")
   public String list(Model model) throws Exception {
@@ -30,29 +29,12 @@ public class TeacherControl {
     model.addAttribute("teachers", list);
     model.addAttribute("title", "강사관리-목록");
     model.addAttribute("contentPage", "/teacher/list.jsp");
-    return "main"; 
+    return "main";
   }
-  
-  @RequestMapping("/teacher/detail")
-  public String detail(int memberNo, Model model) throws Exception {
-    
-    Teacher teacher = teacherService.getDetail(memberNo);
-    
-    if (teacher == null) {
-      throw new Exception("해당 강사가 없습니다.");
-    }
-    model.addAttribute("teacher", teacher);
-    model.addAttribute("title", "강사관리-상세정보");
-    model.addAttribute("contentPage", "/teacher/detail.jsp");
-    return "/main"; 
-  }
-  
-  @RequestMapping("/teacher/add")
-  public String add(
-      Teacher teacher, MultipartFile[] photo) throws Exception {
-    
-    
 
+  @RequestMapping("/teacher/add")
+  public String add(Teacher teacher, MultipartFile[] photo) throws Exception {
+    
     ArrayList<Photo> photoList = new ArrayList<>();
     for (MultipartFile file : photo) {
       if (file.getSize() > 0) { // 파일이 업로드 되었다면,
@@ -70,15 +52,28 @@ public class TeacherControl {
   
   @RequestMapping("/teacher/delete")
   public String delete(int memberNo) throws Exception {
-
     teacherService.delete(memberNo);
-    
     return "redirect:list.do";
   }
   
-  @RequestMapping("/teacher/update.do")
-  public String update(
-      Teacher teacher, MultipartFile[] photo) throws Exception {
+  @RequestMapping("/teacher/detail")
+  public String detail(int memberNo, Model model) throws Exception {
+    
+    Teacher teacher = teacherService.getDetail(memberNo);
+    
+    if (teacher == null) {
+      throw new Exception("해당 강사가 없습니다.");
+    }
+
+    model.addAttribute("teacher", teacher);
+    model.addAttribute("title", "강사관리-상세정보");
+    model.addAttribute("contentPage", "/teacher/detail.jsp");
+    
+    return "main";
+  }
+  
+  @RequestMapping("/teacher/update")
+  public String update(Teacher teacher, MultipartFile[] photo) throws Exception {
     
     ArrayList<Photo> photoList = new ArrayList<>();
     for (MultipartFile file : photo) {

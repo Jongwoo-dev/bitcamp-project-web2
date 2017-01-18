@@ -15,24 +15,21 @@ import bitcamp.java89.ems2.service.TeacherService;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
-
   @Autowired MemberDao memberDao;
-  @Autowired StudentDao studentDao; 
+  @Autowired StudentDao studentDao;
   @Autowired ManagerDao managerDao;
   @Autowired TeacherDao teacherDao;
   
-  @Override
   public List<Teacher> getList() throws Exception {
     return teacherDao.getList();
   }
-
-  @Override
+  
   public Teacher getDetail(int no) throws Exception {
     return teacherDao.getOneWithPhoto(no);
   }
-
-  @Override
+  
   public int add(Teacher teacher) throws Exception {
+    
     if (teacherDao.count(teacher.getEmail()) > 0) {
       throw new Exception("이메일이 존재합니다. 등록을 취소합니다.");
     }
@@ -46,25 +43,29 @@ public class TeacherServiceImpl implements TeacherService {
     }
     
     int count = teacherDao.insert(teacher);
-    teacherDao.insertPhoto(teacher);
+    
+    if (teacher.getPhotoList().size() > 0) {
+      teacherDao.insertPhoto(teacher);
+    }
+    
     return count;
   }
-
-  @Override
+  
   public int delete(int no) throws Exception {
     if (teacherDao.countByNo(no) == 0) {
       throw new Exception("강사를 찾지 못했습니다.");
     }
+    
     teacherDao.deletePhoto(no);
     int count = teacherDao.delete(no);
 
     if (studentDao.countByNo(no) == 0 && managerDao.countByNo(no) == 0) {
       memberDao.delete(no);
     }
+    
     return count;
   }
-
-  @Override
+  
   public int update(Teacher teacher) throws Exception {
     if (teacherDao.countByNo(teacher.getMemberNo()) == 0) {
       throw new Exception("강사를 찾지 못했습니다.");
@@ -74,9 +75,26 @@ public class TeacherServiceImpl implements TeacherService {
     
     int count = teacherDao.update(teacher);
     teacherDao.deletePhoto(teacher.getMemberNo());
-    teacherDao.insertPhoto(teacher);
     
+    if (teacher.getPhotoList().size() > 0) {
+      teacherDao.insertPhoto(teacher);
+    }
     return count;
   }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" 
+    contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>     
 <h1>학생 정보</h1>
 <form action='update.do' method='POST' enctype='multipart/form-data'>
 <table border='1'>
@@ -16,15 +16,16 @@
   <c:if test="${!student.working}">checked</c:if> >실업/미취업</td></tr>
 <tr><th>최종학력</th><td>
 <select name='grade'>
-  <option value='고졸' <c:if test="${student.grade=='고졸'}">selected</c:if> >고졸</option>
-  <option value='전문학사' <c:if test="${student.grade=='전문학사'}">selected</c:if> >전문학사</option>
-  <option value='학사' <c:if test="${student.grade=='학사'}">selected</c:if> >학사</option>
-  <option value='석사' <c:if test="${student.grade=='석사'}">selected</c:if> >석사</option>
-  <option value='박사' <c:if test="${student.grade=='박사'}">selected</c:if> >박사</option>
+  <option value='고졸' <c:if test="${student.grade=='고졸'}">selected</c:if>>고졸</option>
+  <option value='전문학사' <c:if test="${student.grade=='전문학사'}">selected</c:if>>전문학사</option>
+  <option value='학사' <c:if test="${student.grade=='학사'}">selected</c:if>>학사</option>
+  <option value='석사' <c:if test="${student.grade=='석사'}">selected</c:if>>석사</option>
+  <option value='박사' <c:if test="${student.grade=='박사'}">selected</c:if>>박사</option>
 </select>
 </td></tr>
 <tr><th>최종학교</th><td><input name='schoolName' type='text' value='${student.schoolName}'></td></tr>
-<tr><th>사진</th><td><img src='../upload/${student.photoPath}' height='80px'><input name='photo' type='file'></td></tr></table>
+<tr><th>사진</th><td><img src='../upload/${student.photoPath}' height='80'>
+    <input name='photo' type='file'></td></tr></table>
 <button type='submit'>변경</button>
  <a href='delete.do?memberNo=${student.memberNo}'>삭제</a>
 <input type='hidden' name='memberNo' value='${student.memberNo}'>

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 public class DataSource {
   ArrayList<Connection> conPool = new ArrayList<>();
 
-  public DataSource() throws Exception{
+  public DataSource() throws Exception {
     Class.forName("com.mysql.jdbc.Driver");
   }
-
+  
   public Connection getConnection() throws Exception {
     if (conPool.size() == 0) {
       return DriverManager.getConnection("jdbc:mysql://localhost:3306/java89db", 

@@ -16,15 +16,24 @@ public class SystemInfoControl {
   @Autowired ServletContext servletContext;
   
   @RequestMapping("/system/beansInfo")
-  public void springLibraryInfo(Model model) {
+  public void beansInfo(Model model) {
     WebApplicationContext appContext = 
         WebApplicationContextUtils.getWebApplicationContext(servletContext);
     
-    ArrayList<String> beanClassNames = new ArrayList<>();
+    ArrayList<String> beanClassNames = new ArrayList<>(); 
     String[] names = appContext.getBeanDefinitionNames();
+    
     for (String name : names) {
       beanClassNames.add(appContext.getBean(name).getClass().getName());
     }
+    
     model.addAttribute("beanClassNames", beanClassNames);
   }
 }
+
+
+
+
+
+
+

@@ -9,17 +9,25 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import bitcamp.java89.ems2.domain.Member;
 
 public class LoginCheckInterceptor extends HandlerInterceptorAdapter {
-
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     HttpSession session = request.getSession();
     Member member = (Member)session.getAttribute("member");
-
+    
     if (member == null) {
-      response.sendRedirect(request.getContextPath() + "/auth/loginform.do"); // getContextPath() = 웹 어플리케이션 경로까지를 리턴함.
+      response.sendRedirect(request.getContextPath() + "/auth/loginform.do");
       return false;
-    }
+    } 
     
     return true;
   }
 }
+
+
+
+
+
+
+
+
+

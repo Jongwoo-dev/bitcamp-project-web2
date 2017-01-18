@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ page 
+    language="java" 
+    contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    trimDirectiveWhitespaces="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +11,9 @@
 <title>${title}</title>
 <style type="text/css">
 body {
-  font-family: '맑은 고딕', sans-serif;'
+  font-family: '맑은 고딕', sans-serif;
 }
+
 #sidemenu {
   color: white;
   padding: 10px 5px;
@@ -32,7 +35,6 @@ body {
 }
 
 </style>
-
 </head>
 <body>
 
@@ -41,10 +43,11 @@ body {
 <jsp:include page="/sidemenu.jsp"></jsp:include>
 
 <div id="content">
-  <jsp:include page="${contentPage}"></jsp:include>
+<jsp:include page="${contentPage}"></jsp:include>
 </div>
 
 <jsp:include page="/footer.jsp"></jsp:include>
 
 </body>
 </html>
+    

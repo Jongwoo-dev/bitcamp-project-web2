@@ -7,7 +7,7 @@ public class Photo implements Serializable {
   
   protected int no;
   protected String filePath;
-  protected int ownerId;
+  protected int ownerNo;
   
   public Photo() {}
   
@@ -29,11 +29,14 @@ public class Photo implements Serializable {
     this.filePath = filePath;
     return this;
   }
-  public int getOwnerId() {
-    return ownerId;
+  public int getOwnerNo() {
+    return ownerNo;
   }
-  public Photo setOwnerId(int ownerId) {
-    this.ownerId = ownerId;
+  public Photo setOwnerNo(int ownerNo) {
+    this.ownerNo = ownerNo;
     return this;
   }
+  
+  
+  
 }

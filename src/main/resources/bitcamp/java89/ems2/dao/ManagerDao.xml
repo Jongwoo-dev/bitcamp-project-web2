@@ -2,6 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
 <mapper namespace="bitcamp.java89.ems2.dao.ManagerDao">
 
   <resultMap type="manager" id="manager-map">
@@ -14,34 +15,32 @@
     <result column="posi"       property="position"/>
     <result column="fax"        property="fax"/>
     <result column="path"       property="photoPath"/>
-    
   </resultMap>
-
-  <select id="count" parameterType="string" resultType="int">
+  
+  <select id="count" parameterType="String" resultType="int">
     select count(*)
     from mgr mr 
-    left outer join memb m on mr.mrno=m.mno
-    where email=#{value}
+      inner join memb m on mr.mrno=m.mno
+    where m.email=#{value}
   </select>
   
   <select id="countByNo" parameterType="int" resultType="int">
     select count(*)
-    from mgr mr
+    from mgr mr 
       inner join memb m on mr.mrno=m.mno
     where mr.mrno=#{value}
   </select>
   
   <select id="getList" resultMap="manager-map">
     select 
-      m.mno, 
-      m.name, 
-      m.tel, 
-      m.email, 
-      mr.posi,
-      mr.fax, 
-      mr.path
+      mno, 
+      name, 
+      tel, 
+      email, 
+      posi, 
+      path
     from mgr mr
-    left outer join memb m on mr.mrno=m.mno
+      inner join memb m on mr.mrno=m.mno
   </select>
   
   <select id="getOne" parameterType="int" resultMap="manager-map">
@@ -55,18 +54,14 @@
       mr.path
     from mgr mr
       inner join memb m on mr.mrno=m.mno
-    where m.mno=#{value}
+    where m.mno=#{value} 
   </select>
-
-  <insert id="insert" parameterType="manager">
-    insert into mgr(mrno,posi,fax,path) 
-    values(
-      #{memberNo},
-      #{position},
-      #{fax},
-      #{photoPath})
-  </insert>
   
+  <insert id="insert" parameterType="manager">
+    insert into mgr(mrno, posi, fax, path) 
+    values(#{memberNo}, #{position}, #{fax}, #{photoPath})
+  </insert>  
+
   <update id="update" parameterType="manager">
     update mgr set
       posi=#{position}, 
@@ -78,5 +73,13 @@
   <delete id="delete" parameterType="int">
     delete from mgr where mrno=#{value}
   </delete>
+  
 </mapper>
+
+
+
+
+
+
+
 
