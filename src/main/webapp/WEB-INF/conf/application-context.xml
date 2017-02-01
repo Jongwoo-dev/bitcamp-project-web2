@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
         http://www.springframework.org/schema/context
@@ -54,7 +54,7 @@
     <property name="basePackage" value="bitcamp.java89.ems2.dao" />
   </bean>
   
-  <!-- 트랜젝션을 다루는 Advice 등록 -->
+  <!-- 트랜잭션을 다루는 Advice 등록 -->
   <tx:advice id="txAdvice" transaction-manager="txManager">
     <tx:attributes>
       <tx:method name="get*" read-only="true"/>
@@ -66,12 +66,11 @@
   <aop:config>
     <!-- 트랜잭션 Advice를 꼽을 위치 지정 -->
     <aop:pointcut id="serviceOperation" 
-                  expression="execution(* bitcamp.java89.ems2.service..*(..))"/>
+                  expression="execution(* bitcamp.java89.ems2.service..*(..))" />
     <!-- 위치와 Advice를 연결한다. -->
     <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation"/>
   </aop:config>
 </beans>
-
 
 
 

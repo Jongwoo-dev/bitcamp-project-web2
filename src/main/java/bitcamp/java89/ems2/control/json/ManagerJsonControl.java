@@ -1,4 +1,4 @@
-package bitcamp.java89.ems2.control;
+package bitcamp.java89.ems2.control.json;
 
 import java.io.File;
 import java.util.List;
@@ -6,17 +6,18 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import bitcamp.java89.ems2.domain.Manager;
 import bitcamp.java89.ems2.service.ManagerService;
 import bitcamp.java89.ems2.util.MultipartUtil;
 
-@Controller
-public class ManagerControl {
+//@Controller
+@RestController // 이 애노테이션을 붙이면, 스프링 설정 파일에 JSON 변환기 'MappingJackson2JsonView' 객체를 등록하지 않아도 된다.
+public class ManagerJsonControl {
   @Autowired ServletContext sc;
   
   @Autowired ManagerService managerService;
@@ -29,12 +30,20 @@ public class ManagerControl {
   }
   
   @RequestMapping("/manager/list")
-  public String list(Model model) throws Exception {
+  public AjaxResult list() throws Exception {
     List<Manager> list = managerService.getList();
-    model.addAttribute("managers", list);
-    model.addAttribute("title", "매니저관리-목록");
-    model.addAttribute("contentPage", "manager/list.jsp");
-    return "main";
+    return new AjaxResult(AjaxResult.SUCCESS, list);
+  }
+  
+  @RequestMapping("/manager/detail")
+  public AjaxResult detail(int memberNo) throws Exception {
+    Manager manager = managerService.getDetail(memberNo);
+    
+    if (manager == null) {
+      return new AjaxResult(AjaxResult.FAIL, "해당 아이디의 학생이 없습니다.");
+    }
+    
+    return new AjaxResult(AjaxResult.SUCCESS, manager);
   }
   
   @RequestMapping("/manager/add")
@@ -57,21 +66,6 @@ public class ManagerControl {
   public String delete(int memberNo) throws Exception {
     managerService.delete(memberNo);
     return "redirect:list.do";
-  }
-  
-  @RequestMapping("/manager/detail")
-  public String detail(int memberNo, Model model) throws Exception {
-    Manager manager = managerService.getDetail(memberNo);
-    
-    if (manager == null) {
-      throw new Exception("해당 아이디의 학생이 없습니다.");
-    }
-    
-    model.addAttribute("manager", manager);
-    model.addAttribute("title", "매니저관리-상세정보");
-    model.addAttribute("contentPage", "manager/detail.jsp");
-    
-    return "main";
   }
   
   @RequestMapping("/manager/update")

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>강사관리-상세정보</title>
+<style type="text/css">
+body {
+  font-family: '맑은 고딕', sans-serif;
+}
+
+#sidebar {
+  color: white;
+  padding: 10px 5px;
+  float: left;
+  margin: 5px 5px 5px 0px;
+}
+
+#sidebar a {
+  color: white;
+  text-decoration: none;
+}
+
+#content {
+  margin-left: 200px;
+}
+
+#footer {
+  clear: left;
+}
+
+</style>
+</head>
+<body>
+
+<div id='header' style='background-color:gray; height:40px;position:relative;'></div>
+
+<div id='sidebar' style='background-color:Navy; width:180px; height:400px;'></div>
+
+<div id="content">
+<h1>강사 정보</h1>
+<form action='update.do' method='POST' enctype='multipart/form-data'>
+<table border='1'>
+<tr><th>이메일</th><td><input id='email' type='text'></td></tr>
+<tr><th>암호</th><td><input id='password' type='password'></td></tr>
+<tr><th>이름</th><td><input id='name' type='text'></td></tr>
+<tr><th>전화</th><td><input id='tel' type='text'></td></tr>
+<tr><th>홈페이지</th><td><input id='homepage' type='text'></td></tr>
+<tr><th>페이스북</th><td><input id='facebook' type='text'></td></tr>
+<tr><th>트위터</th><td><input id='twitter' type='text'></td></tr>
+<tr><th>사진</th><td><img id='photo-img1' src='../upload/' height='80'>
+    <input id='photo1' type='file'></td></tr>
+<tr><th>사진</th><td><img id='photo-img2' src='../upload/' height='80'>
+    <input id='photo2' type='file'></td></tr>
+<tr><th>사진</th><td><img id='photo-img3' src='../upload/' height='80'>
+    <input id='photo3' type='file'></td></tr>
+</table>
+<button id='updBtn'>변경</button>
+<button id='delBtn'>삭제</button>
+<button id='listBtn'>목록</button>
+</form>
+</div>
+
+
+<div id='footer' style='background-color:gray; height:20px; margin-top:20px;'></div>
+
+<script src='../js/bit.js'></script>
+<script src='../js/common.js'></script>
+<script>
+var memberNo = location.href.split('?')[1].split('=')[1];
+
+get('detail.json?memberNo=' + memberNo, function(jsonText) {
+
+var ajaxResult = JSON.parse(jsonText);
+var status = ajaxResult.status;
+
+if (status != "success") {
+  alert(ajaxResult.data);
+  return;
+}
+
+var teahcer = ajaxResult.data;
+
+document.querySelector('#email').value = teahcer.email;
+document.querySelector('#name').value = teahcer.name;
+document.querySelector('#tel').value = teahcer.tel;
+document.querySelector('#homepage').value = teahcer.homepage;
+document.querySelector('#facebook').value = teahcer.facebook;
+document.querySelector('#twitter').value = teahcer.twitter;
+document.querySelector('#photo-img1').src = "../upload/" + teahcer.photoList[0].filePath;
+document.querySelector('#photo-img2').src = "../upload/" + teahcer.photoList[1].filePath;
+document.querySelector('#photo-img3').src = "../upload/" + teahcer.photoList[2].filePath;
+});
+
+</script>
+</body>
+</html>
+    

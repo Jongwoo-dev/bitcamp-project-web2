@@ -14,9 +14,12 @@ public class WebControllerAdvice {
 
   @InitBinder
   public void initBinder(WebDataBinder binder) {
-    //System.out.println("MyBindingInitializer.initBinder()....");
     dateFormat.setLenient(false);
     binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
   }
-}
   
+}
+
+
+
+
