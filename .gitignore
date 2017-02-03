@@ -13,4 +13,5 @@ hs_err_pid*
 /.classpath
 /.project
 /*.log
-
+/.DS_Store
+*.DS_Store
