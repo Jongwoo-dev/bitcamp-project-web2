@@ -3,32 +3,7 @@
 <head>
 <meta charset='UTF-8'>
 <title>매니저관리-상세정보</title>
-<style type="text/css">
-body {
-  font-family: '맑은 고딕', sans-serif;
-}
-
-#sidebar {
-  color: white;
-  padding: 10px 5px;
-  float: left;
-  margin: 5px 5px 5px 0px;
-}
-
-#sidebar a {
-  color: white;
-  text-decoration: none;
-}
-
-#content {
-  margin-left: 200px;
-}
-
-#footer {
-  clear: left;
-}
-
-</style>
+<link rel="stylesheet" href="../css/common.css">
 </head>
 <body>
 
@@ -40,17 +15,19 @@ body {
 <h1>매니저 정보</h1>
 <form action='update.do' method='POST' enctype='multipart/form-data'>
 <table border='1'>
-<tr><th>이메일</th><td><input id='email' type='text'></td></tr>
-<tr><th>암호</th><td><input id='password' type='password'></td></tr>
-<tr><th>이름</th><td><input id='name' type='text'></td></tr>
-<tr><th>직위</th><td><input id='position' type='text'></td></tr>
-<tr><th>전화</th><td><input id='tel' type='text'></td></tr>
-<tr><th>팩스</th><td><input id='fax' type='text'></td></tr>
-<tr><th>사진</th><td><img id='photo-img' height='80'>
-    <input id='photo' type='file'></td></tr></table>
-<button id='updBtn'>변경</button>
-<button id='delBtn'>삭제</button>
-<button id='listBtn'>목록</button>
+	<tr><th>이메일</th><td><input id='email' type='text'></td></tr>
+	<tr><th>암호</th><td><input id='password' type='password'></td></tr>
+	<tr><th>이름</th><td><input id='name' type='text'></td></tr>
+	<tr><th>직위</th><td><input id='position' type='text'></td></tr>
+	<tr><th>전화</th><td><input id='tel' type='text'></td></tr>
+	<tr><th>팩스</th><td><input id='fax' type='text'></td></tr>
+	<tr><th>사진</th><td><img id='photo-img' height='80' class='view-form'>
+	<input id='photo' type='file'></td></tr>
+</table>
+<button id='add-btn' type='button' class='new-form'>등록</button>
+<button id='update-btn' type='button' class='view-form'>변경</button>
+<button id='delete-btn' type='button' class='view-form'>삭제</button>
+<button id='list-btn' type='button'>목록</button>
 </form>
 </div>
 
@@ -58,30 +35,7 @@ body {
 
 <script src='../js/bit.js'></script>
 <script src='../js/common.js'></script>
-<script>
-var memberNo = location.href.split('?')[1].split('=')[1];
-
-get('detail.json?memberNo=' + memberNo, function(jsonText) {
-
-var ajaxResult = JSON.parse(jsonText);
-var status = ajaxResult.status;
-
-if (status != "success") {
-  alert(ajaxResult.data);
-  return;
-}
-
-var manager = ajaxResult.data;
-console.log(manager);
-
-document.querySelector('#email').value = manager.email;
-document.querySelector('#name').value = manager.name;
-document.querySelector('#position').value = manager.position;
-document.querySelector('#tel').value = manager.tel;
-document.querySelector('#fax').value = manager.fax;
-document.querySelector('#photo-img').src = "../upload/" + manager.photoPath;
-});
-</script>
+<script src='view.js'></script>
 
 </body>
 </html>

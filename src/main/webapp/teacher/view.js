@@ -11,32 +11,28 @@ if (memberNo > 0) {
 }
 
 function prepareViewForm() {
-	// 등록 버튼은 감춘다.
 	var tags = $('.new-form');
 	tags.css('display','none');
 	
-	//학생 목록 가져와서 tr 태그를 만들어 붙인다.
 	$.getJSON('detail.json?memberNo=' + memberNo, function(ajaxResult) {
 		var status = ajaxResult.status;
 		
 		if (status != "success") {
-		  alert(ajaxResult.data);
-		  return;
+			alert(ajaxResult.data);
+			return;
 		}
 		
-		var student = ajaxResult.data;
-		
-		$('#email').val(student.email);
-		$('#name').val(student.name);
-		$('#tel').val(student.tel);
-		if (student.working) {
-			$('#working').attr('checked', 'checked');
-		} else {
-			$('#not-working').attr('checked', 'checked');
-		}
-		$('#grade').val(student.grade);
-		$('#school-name').val(student.schoolName);
-		$('#photo-img').attr('src', "../upload/" + student.photoPath);
+		var teahcer = ajaxResult.data;
+
+		$('#email').val(teahcer.email);
+		$('#name').val(teahcer.name);
+		$('#tel').val(teahcer.tel);
+		$('#homepage').val(teahcer.homepage);
+		$('#facebook').val(teahcer.facebook);
+		$('#twitter').val(teahcer.twitter);
+		try {$('#photo-img1').attr('src', "../upload/" + teahcer.photoList[0].filePath);} catch (error) {};
+		try {$('#photo-img2').attr('src', "../upload/" + teahcer.photoList[1].filePath);} catch (error) {};
+		try {$('#photo-img3').attr('src', "../upload/" + teahcer.photoList[2].filePath);} catch (error) {};
 	});
 	
 	// 삭제 버튼을 클릭 했을 떄 호출될 함수(클릭 이벤트 핸들러) 등록
@@ -53,14 +49,13 @@ function prepareViewForm() {
 	// 변경 버튼을 클릭 했을 떄 호출될 함수(클릭 이벤트 핸들러) 등록
 	$('#update-btn').click(function() {
 	  var param = {
-			"memberNo": memberNo,
-			"name": $('#name').val(),
-			"tel": $('#tel').val(),
-			"email": $('#email').val(),
-			"password": $('#password').val(),
-			"working": $('#working').is(':checked'),
-			"grade": $('#grade').val(),
-			"schoolName": $('#school-name').val()
+		"memberNo": memberNo,
+		"email": $('#email').val(),
+		"name": $('#name').val(),
+		"tel": $('#tel').val(),
+		"homepage": $('#homepage').val(),
+		"facebook": $('#facebook').val(),
+		"twitter": $('#twitter').val()
 	  };
 	  
 	  $.post('update.json', param, function(ajaxResult) {
@@ -73,18 +68,18 @@ function prepareViewForm() {
 	}); // click()
 } // prepareViewForm()
 
+
 function prepareNewForm() {
 	$('.view-form').css('display', 'none');
 
 	$('#add-btn').click(function() {
 		var param = {
+			"email": $('#email').val(),
 			"name": $('#name').val(),
 			"tel": $('#tel').val(),
-			"email": $('#email').val(),
-			"password": $('#password').val(),
-			"working": $('#working').is(':checked'),
-			"grade": $('#grade').val(),
-			"schoolName": $('#school-name').val()
+			"homepage": $('#homepage').val(),
+			"facebook": $('#facebook').val(),
+			"twitter": $('#twitter').val()
 		};
 		
 		$.post('add.json', param, function(ajaxResult) {
@@ -97,7 +92,7 @@ function prepareNewForm() {
 	}); // click()
 }
 
-// 목록 버튼을 클릭했을 때 호출될 함수(이벤트 핸들러) 등록!
+//목록 버튼을 클릭했을 때 호출될 함수(이벤트 핸들러) 등록!
 $('#list-btn').click(function() {
 	location.href = 'main.html';
 }); // click()

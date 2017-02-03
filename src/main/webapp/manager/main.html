@@ -3,32 +3,7 @@
 <head>
 <meta charset='UTF-8'>
 <title>매니저관리-목록</title>
-<style type="text/css">
-body {
-  font-family: '맑은 고딕', sans-serif;
-}
-
-#sidebar {
-  color: white;
-  padding: 10px 5px;
-  float: left;
-  margin: 5px 5px 5px 0px;
-}
-
-#sidebar a {
-  color: white;
-  text-decoration: none;
-}
-
-#content {
-  margin-left: 200px;
-}
-
-#footer {
-  clear: left;
-}
-
-</style>
+<link rel="stylesheet" href="../css/common.css">
 </head>
 <body>
 
@@ -38,7 +13,7 @@ body {
 
 <div id="content">
 <h1>매니저 정보</h1>
-<a href='form.do'>추가</a><br>
+<a id='new-btn' href='#'>추가</a><br>
 <table id='list-table' border='1'>
 <thead>
 	<tr>
@@ -57,38 +32,7 @@ body {
 
 <script src='../js/bit.js'></script>
 <script src='../js/common.js'></script>
-<script>
-get('list.json', function(jsonText) {
-	var ajaxResult = JSON.parse(jsonText);
-	var status = ajaxResult.status;
-	
-  if (status != "success")
-	  return;
-	
-	var list = ajaxResult.data;
-	var tbody = document.querySelector('#list-table > tbody');
-	
-	for (var manager of list) {
-	  var tr = document.createElement("tr");
-	  
-	  tr.innerHTML = "<tr><td>" + 
-	    manager.memberNo + "</td><td><a class='name-link' href='#' data-no='" + 
-	    manager.memberNo + "'>" + 
-	    manager.name + "</a></td><td>" + 
-	    manager.position + "</td><td>" + 
-	    manager.tel + "</td></tr>";
-	  tbody.appendChild(tr);  
-	}
-	
-	var al = document.querySelectorAll('.name-link');
-	for (var a of al) {
-	  a.onclick = function(event) {
-	    event.preventDefault();
-	    location.href = 'view.html?memberNo=' + this.getAttribute("data-no");
-	  }
-	}
-});
-</script>
+<script src='main.js'></script>
 </body>
 </html>
     
